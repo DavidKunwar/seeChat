@@ -63,5 +63,5 @@ if (port == null || port == "") {
 
 
 server.listen(port, () => {
-    console.log('Server is up and running on Port: 3000');
+    console.log(`Server is up and running on Port: ${port}`);
 });
