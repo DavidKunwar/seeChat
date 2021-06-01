@@ -16,7 +16,7 @@ navigator.mediaDevices.getUserMedia(constraints).then(stream => {
 
     const video = document.createElement('video');
     call.on('stream', function(incomingStream){
-      addVideoStream(video, stream);
+      addVideoStream(video, incomingStream);
     });
   });
 
