@@ -1,0 +1,64 @@
+const express = require('express');
+const ejs = require('ejs');
+const app = express();
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require('socket.io');
+const io = new Server(server);
+const { v4: uuidV4 } = require('uuid');
+const bodyParser = require('body-parser');
+const alert = require('alert');
+
+app.set('view engine', 'ejs')
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static('public'));
+
+app.get('/', (req, res) => {
+    res.render('index');
+    // res.redirect(`/${uuidV4()}`)
+});
+
+app.post('/', function(req, res){
+    if(req.body.create){
+        res.redirect(`/${uuidV4()}`);
+    }
+    if(req.body.join){
+        if(req.body.id){
+            res.redirect(`/${req.body.id}`);
+        }
+    }
+});
+
+app.get('/:room', (req, res) => {
+    res.render('room', { roomId: req.params.room })
+  })
+
+io.on('connection', (socket) => {
+
+    socket.on('join-room', function(roomId, id){
+        socket.join(roomId);
+        //socket.nickname = id;
+        socket.to(roomId).emit('user-connected', id);
+
+        socket.on('disconnect', function(data){
+            socket.to(roomId).emit('user-disconnected', id);
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+server.listen(3000, () => {
+    console.log('Server is up and running on Port: 3000');
+});
