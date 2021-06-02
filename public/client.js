@@ -2,6 +2,14 @@ var socket = io();
 var myPeer = new Peer();
 const peers = {};
 
+let messageForm = $('#send-message');
+let messageBox = $('#message');
+let chat = $('#chat');
+let nickForm = $('#setNick');
+let nickError = $('#nickError');
+let nickBox = $('#nickname');
+
+// HANLDING VIDEO STREAM
 let videoGrid = document.getElementById('video-grid');
 
 const myVideo = document.createElement('video')
@@ -56,3 +64,32 @@ function addVideoStream(video, stream){
   });
   videoGrid.append(video);
 }
+
+
+// HANDLING MESSAGING
+nickForm.submit(function(event){
+  event.preventDefault();
+
+  socket.emit('new user', nickBox.val(), function(isValidUsername){
+      if(isValidUsername){
+          $('#nickWrap').hide();
+          $('#contentWrap').show();
+          $('body').css("background-color","rgba(24, 22, 22, 0.97)");
+      }else{
+          nickError.html('This username is taken, try something else.');
+      }
+  });
+  nickBox.val('');
+});
+
+
+messageForm.submit(function(event){
+  event.preventDefault();
+
+  socket.emit('send message', messageBox.val());
+  messageBox.val('');
+});
+
+socket.on('new message', function(messageData){
+  chat.append("<li>"+ messageData.name + " :  " + messageData.message +"</li>");
+});

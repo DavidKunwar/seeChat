@@ -6,32 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Document</title>
-
-    <style>
-        #video-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, 300px);
-          grid-auto-rows: 300px;
-        }
-        
-        video {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-      </style>
       
 </head>
-<body>
-  <div class="roomId">Room ID : <%= roomId %></div>
+<body id="body">
 
+  <div id="nickWrap">
+    <form id="setNick">
+        <input id="nickname" type="text" placeholder="Enter a username">
+        <button>Login</button>
+    </form>
+    <p id="nickError"></p>
+  </div>
+
+  <div id="contentWrap">
+    <div class="roomId">Room ID : <%= roomId %></div>
     <div id="video-grid"></div>
+    
+    <div id="chatWrap">
+      <ul id="chat"></ul>
+      <form id="send-message">
+        <textarea id="message" placeholder="Message.." cols="36" rows="4"></textarea>
+        <button>Send</button>
+      </form>
+    </div>
+  </div>
 
     <script>
       const ROOM_ID = "<%= roomId %>"
     </script>
     <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="client.js"></script>
 </body>
