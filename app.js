@@ -98,5 +98,5 @@ if (port == null || port == "") {
 
 
 server.listen(port, () => {
-    console.log(`Server is up and running on Port: ${port}`);
+    console.log(`Server is up and running on PORT: ${port}`);
 });
